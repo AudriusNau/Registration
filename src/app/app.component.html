@@ -1,21 +1,93 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
-<router-outlet></router-outlet>
+<h1> Registracija pas gydytoją</h1>
+<form class="example-form" [formGroup]="profileForm" (ngSubmit)="onSubmit(registerForm)">
+
+
+
+
+  <mat-form-field class="example-full-width" >
+    <mat-label>Vardas</mat-label>
+    <input matInput required formControlName="name" >
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Pavardė</mat-label>
+    <input matInput  required formControlName="lastname">
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Elektroninis paštas</mat-label>
+    <input matInput  required formControlName="email">
+    <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Telefono numeris</mat-label>
+    <input matInput type="tel" required formControlName="phoneNumber">
+    <span matPrefix>+370 &nbsp;</span>
+  </mat-form-field>
+
+
+  <mat-label>Ar buvote šiais metais Italijoje?</mat-label>
+  <div>
+      <mat-radio-group class="radio-button" formControlName="Italy" >
+        <mat-radio-button value=true>Taip</mat-radio-button>
+        <mat-radio-button value=false>Ne</mat-radio-button>
+      </mat-radio-group>
+  </div>
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Pasirinkite gydytoją</mat-label>
+    <mat-select formControlName="doctor">
+      <mat-option>Pasirinkite</mat-option>
+      <mat-option *ngFor="let doctor of doctors" [value]="doctor"  >{{doctor}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div>
+    <mat-label >Registracija patvirtinama tik užpildžius visus laukus!</mat-label>
+  </div>
+  <button class="blue" type="submit" [disabled]='!profileForm.valid'  >Registruotis</button>
+</form>
+
+
+<!--=========================Lentele========================-->
+  <table mat-table [dataSource]="dataSource"  class="mat-elevation-z8">
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Vardas </th>
+      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lastname">
+      <th mat-header-cell *matHeaderCellDef> Pavardė </th>
+      <td mat-cell *matCellDef="let element"> {{element.lastname}} </td>
+    </ng-container>
+    <!-- Weight Column -->
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Elektroninis paštas </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="phoneNumber">
+      <th mat-header-cell *matHeaderCellDef> Telefono numeris </th>
+      <td mat-cell *matCellDef="let element">+370  {{element.phoneNumber}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Italy">
+      <th mat-header-cell *matHeaderCellDef> Ar buvo Italijoje </th>
+      <td mat-cell *matCellDef="let element"> {{element.Italy==true? 'Taip' : 'Ne'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="doctor">
+      <th mat-header-cell *matHeaderCellDef> Daktaras </th>
+      <td mat-cell *matCellDef="let element"> {{element.doctor}} </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+
